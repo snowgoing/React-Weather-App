@@ -9,14 +9,14 @@ module.exports = {
     var requestURL = `${OPEN_WEATHER_MAP_URL}&q=${encodedLocation}`;
 
     return axios.get(requestURL).then(function(res){
-      debugger;
-      if (res.status === 200) {
-        return res.data.main.temp;
+
+      if (res.data.cod && res.data.message) {
+        throw new Error(res.data.message);
       } else {
-        throw new Error(res);
+        return res.data.main.temp;
       }
     }, function(res){
-      throw new Error(res);
+      throw new Error('City not found');
     });
   }
 }

@@ -13,7 +13,8 @@ class Weather extends Component {
     this.handleSearch = this.handleSearch.bind(this);
   }
   handleSearch(location) {
-    // var that = this;  ** Would be for that.setState without the arrow function
+    // Without the arrow function in OpenWeatherMap call
+    // we would need var that = this; for that.setState
 
     this.setState({isLoading: true});
 
@@ -23,7 +24,7 @@ class Weather extends Component {
         loc: location,
         isLoading: false
       });
-    }, function(e) {
+    }, (e) => {
       alert(e);
       this.setState({
         temp: '',
