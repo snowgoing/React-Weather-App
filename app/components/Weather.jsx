@@ -19,13 +19,17 @@ class Weather extends Component {
 
     this.setState({
       isLoading: true,
-      errorMessage: undefined
+      errorMessage: undefined,
+      temp: undefined,
+      loc: undefined,
+      country: undefined
     });
 
-    OpenWeatherMap.getTemp(location).then((temp) => {
+    OpenWeatherMap.getTemp(location).then((data) => {
       this.setState({
-        temp: temp,
+        temp: data.temp,
         loc: location,
+        country: data.country,
         isLoading: false
       });
     }, (e) => {
@@ -35,14 +39,30 @@ class Weather extends Component {
       });
     });
   }
+  componentDidMount() {
+    var loc = this.props.location.query.location;
+
+    if (loc && loc.length > 0) {
+      this.handleSearch(loc);
+      window.location.hash = '#/';
+    }
+  }
+  componentWillReceiveProps(newProps) {
+    var loc = newProps.location.query.location;
+
+    if (loc && loc.length > 0) {
+      this.handleSearch(loc);
+      window.location.hash = '#/';
+    }
+  }
   render() {
-    var {isLoading, loc, temp, errorMessage} = this.state;
+    var {isLoading, loc, temp, country, errorMessage} = this.state;
 
     function renderMessage() {
       if (isLoading) {
         return <h3 className='text-center'>Fetching weather...</h3>;
       } else if (temp && loc) {
-        return <WeatherMessage temp={temp} location={loc}/>
+        return <WeatherMessage temp={temp} location={loc} country={country}/>
       }
     };
 

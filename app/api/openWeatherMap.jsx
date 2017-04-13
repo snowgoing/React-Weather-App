@@ -13,7 +13,10 @@ module.exports = {
       if (res.status !== 200) {
         throw new Error(res.data.message);
       } else {
-        return res.data.main.temp;
+        return {
+          temp: res.data.main.temp,
+          country: res.data.sys.country
+        }
       }
     }, function(err){
       // throw new Error(err.response.data.message) is how new -v of Axios works
